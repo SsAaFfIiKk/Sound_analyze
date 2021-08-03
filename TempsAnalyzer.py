@@ -108,7 +108,7 @@ class TempsAnalyzer:
     def get_temp(self, fragment):
         onset_env = librosa.onset.onset_strength(fragment, sr=self.sr)
         tempo = librosa.beat.tempo(onset_envelope=onset_env, sr=self.sr)
-        return tempo[0]
+        return round(tempo[0])
 
     def check_lower_border(self, temp):
         if temp < self.lower_border:
@@ -141,7 +141,7 @@ class TempsAnalyzer:
                         changes.append("Temp don`t change")
                 self.results["fragments"].append({"file_name": temp[0],
                                                   "temps": temp[1],
-                                                  "mean_temp": mean(temp[1]),
+                                                  "mean_temp": round(mean(temp[1]), 1),
                                                   "significant_decrease": self.bradial,
                                                   "significant_increase": self.tahial,
                                                   "temp_change": changes,
@@ -153,6 +153,7 @@ class TempsAnalyzer:
                 self.check_upper_border(temp[1])
                 self.results["fragments"].append({"file_name": temp[0],
                                                   "temps": temp[1],
+                                                  "mean_temp": temp[1],
                                                   "significant_decrease": self.bradial,
                                                   "significant_increase": self.tahial,
                                                   "temp_change": "Fragment is too short",
